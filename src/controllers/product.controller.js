@@ -1,5 +1,7 @@
 import { createProductQuery, deleteProductQuery, getAllProductsQuery, getProductByIdQuery, updateProductQuery } from "../repositories/product.repository.js";
 
+
+
 const getAllProducts = async (req, res) => {
     try {
         const products = await getAllProductsQuery();
@@ -22,10 +24,12 @@ const getProductById = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-    const { title, description, code, price, stock, category, thumbnail } = req.body;
+    const { name, description, code, price, stock, category, thumbnail = [''] } = req.body;
     try {
-        const newProduct = await createProductQuery( title, description, code, price, stock, category, thumbnail );
-        res.status(201).json(newProduct);
+        const allProducts = await createProductQuery( name, description, code, price, stock, category, thumbnail );
+        const socketServer = req.app.get('socketServer');
+        socketServer.emit('server:refreshProduct', allProducts);
+        res.status(201).json('Producto creado');
     } catch (error) {
         res.status(500).json({ error });
     }
@@ -45,8 +49,10 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     const pid = Number(req.params.pid);
     try {
-        const deletedProduct = await deleteProductQuery(pid);
-        res.status(200).json(deletedProduct);
+        const allProducts = await deleteProductQuery(pid);
+        const socketServer = req.app.get('socketServer');
+        socketServer.emit('server:refreshProduct', allProducts);
+        res.status(200).json('Producto eliminado');
     } catch (error) {
         res.status(500).json({ error });
     }

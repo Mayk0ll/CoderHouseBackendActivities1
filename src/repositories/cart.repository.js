@@ -1,5 +1,5 @@
 import { Cart } from "../class/cart.class.js";
-import { carts } from "../config/db.memory.js";
+import { carts } from "../database/db.memory.js";
 
 const getCartByIdQuery = async (id) => {
     return carts.find(cart => cart.id == id);
