@@ -1,36 +1,52 @@
-import express from "express";
-import morgan from "morgan";
-import handlebars from "express-handlebars";
-import { Server } from 'socket.io';
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import handlebars from 'express-handlebars';
 
-import cartRoutes from "./routes/cart.routes.js";
-import productRoutes from "./routes/product.routes.js";
-import viewsRouter from "./routes/views.routes.js";
-import config from "./config.js";
-import socketHandler from "./socket.js";
+import initSocket from './utils/sockets.js';
+import connectionDB from './config/db/connection.js';
+import __dirname from './config/config.js';
+
+import routes from './routes/index.js';
+import viewsRouter from './routes/views.routes.js';
 
 const app = express();
-const port = config.PORT || 8080;
-const httpServer = app.listen(port, () => console.log(`Server is running on port ${port}`));
-const socketServer = new Server(httpServer);
+const port = process.env.PORT || 8080;
 
-socketHandler(socketServer);
+const httpServer = app.listen( port , async () => {
 
-app.set('socketServer', socketServer);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("src/public"));
-app.use(morgan("dev"));
+    await connectionDB();
+    const socketServer =  initSocket(httpServer);
+    
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(cors());
+    app.use(morgan('dev'));
+    app.engine('handlebars', handlebars.engine());
+    app.set('socketServer', socketServer);
+    app.set('views', `${__dirname}/views`);
+    app.set('view engine', 'handlebars');
+    
+    app.use('/static', express.static(__dirname + '/public'));
+    app.use('/api', routes);
+    app.use('/views', viewsRouter);
 
-app.engine('handlebars', handlebars.engine());
-app.set('views', `${config.DIRNAME}/views`);
-app.set('view engine', 'handlebars');
+    app.get('**', (req, res) => {
+        res.redirect('/views/home');
+    });
 
-app.use('/api/carts', cartRoutes);
-app.use('/api/products', productRoutes);
-app.use('/views', viewsRouter);
 
-app.get('**', (req, res) => {
-    res.redirect('/views/home');
-});
+    console.log(`Server is running on port ${port}`);
+})
+
+
+
+
+
+
+
+
+
+
+
 
