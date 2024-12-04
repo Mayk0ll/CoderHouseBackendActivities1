@@ -1,6 +1,3 @@
-
-
-
 <div>
     <h1>Productos a tiempo real</h1>
     <div class="row">
@@ -14,7 +11,7 @@
                     <p>Disponible: {{this.stock}}</p>
                     <p></p>
                     <p>Categoría: {{this.category}}</p>
-                    <button type="button" class="btn btn-primary mt-2" onclick="deleteProduct(event, {{this.id}})">Eliminar</button>
+                    <button type="button" class="btn btn-primary mt-2" onclick="deleteProduct(event, '{{this._id}}')">Eliminar</button>
                 </div>
             {{/each}}
         </div>
@@ -47,12 +44,6 @@
                 </div>
                 <button type="button" class="btn btn-primary" onclick="createProduct(event)">Crear producto</button>
             </form>
-
-
-
         </div>
     </div>
-
-    
-
 </div>

@@ -1,4 +1,4 @@
-import { addProductToCartQuery, createCartQuery, getCartByIdQuery } from "../repositories/cart.repository.js";
+import { addProductToCartQuery, createCartQuery, getCartByIdQuery, getCartByUserIdQuery } from "../repositories/cart.repository.js";
 
 const getCartById = async (req, res) => {
     try {
@@ -21,9 +21,13 @@ const createCart = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
     try {
-        const { cid, pid } = req.params;
-        const cart = await addProductToCartQuery(Number(cid), Number(pid));
-        res.json({ cart });
+        const { uid, pid } = req.params;
+        let cart = await getCartByUserIdQuery(uid);
+        console.log(cart);
+        if(!cart) cart = await createCartQuery(uid);
+        console.log(cart);
+        await addProductToCartQuery(cart, pid);
+        res.json({ data: 'entre' });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error });

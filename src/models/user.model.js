@@ -1,15 +1,16 @@
 import { Schema, model } from "mongoose";
 
 const userModel = new Schema({
-    name: {
+    firstName: {
         type: String,
         required: true,
         trim: true
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true,
-        trim: true 
+        trim: true,
+        index: true,
     },
     email: {
         type: String,
@@ -21,9 +22,10 @@ const userModel = new Schema({
         type: String,
         required: true
     },
-    role: {
+    gender: {
         type: String,
-        default: 'user'
+        enum: ['Femenino', 'Masculino'],
+        required: true
     },
     active: {
         type: Boolean,

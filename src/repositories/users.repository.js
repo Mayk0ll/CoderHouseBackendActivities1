@@ -1,27 +1,27 @@
 import UserModel from "../models/user.model.js"
 
-const getAllUsersQuery = () => {
-    return UserModel.find({active: true});
+const getAllUsersQuery = async () => {
+    return await UserModel.find();
 }
 
-const getUserByIdQuery = (id) => {
-    return UserModel.findById(id);
+const getUserByIdQuery = async (id) => {
+    return await UserModel.findById(id);
 }
 
-const getUserByEmailQuery = (email) => {
-    return UserModel.findOne({email});
+const getUserByEmailQuery = async (email) => {
+    return await UserModel.findOne({ email });
 }
 
-const createUserQuery = (user) => {
-    return UserModel.create(user);
+const createUserQuery = async (user) => {
+    return await UserModel.create(user);
 }
 
-const updateUserQuery = (id, user) => {
-    return UserModel.findByIdAndUpdate(id, user);
+const updateUserQuery = async (id, user) => {
+    return await UserModel.findByIdAndUpdate(id, user);
 }
 
-const deleteUserQuery = (id) => {
-    return UserModel.findByIdAndUpdate(id, {active: false});
+const deleteUserQuery = async (id) => {
+    return await UserModel.findByIdAndUpdate(id, {active: false});
 }
 
 export { createUserQuery, getAllUsersQuery, getUserByIdQuery, getUserByEmailQuery, updateUserQuery, deleteUserQuery };

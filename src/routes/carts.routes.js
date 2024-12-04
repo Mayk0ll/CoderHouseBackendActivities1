@@ -7,6 +7,6 @@ router.get('/:cid', [], getCartById);
 
 router.post('/', [], createCart);
 
-router.post('/:cid/product/:pid', [], addProductToCart);
+router.post('/:uid/product/:pid', [], addProductToCart);
 
 export default router;
