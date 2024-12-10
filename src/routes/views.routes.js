@@ -27,9 +27,19 @@ router.get('/register', async (req, res) => {
     res.render('register', { ...props });
 });
 
-router.get('/cart', async (req, res) => {
-    const cart = await getCartByUserIdQuery();
-    res.render('cart', { ...props, cart });
+router.get('/cart/:uid', async (req, res) => {
+    const cart = await getCartByUserIdQuery(req.params.uid);
+    const products = cart.products.map( product => {
+        return {
+            name: product.product.name,
+            price: product.product.price,
+            quantity: product.quantity,
+            subtotal: product.product.price * product.quantity
+        }
+    });
+
+    const total = products.reduce((acc, product) => acc + product.subtotal, 0);
+    res.render('cart', { ...props, products, total });
 });
 
 export default router;

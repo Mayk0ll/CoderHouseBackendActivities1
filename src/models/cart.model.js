@@ -15,20 +15,29 @@ const cartModel = new Schema({
         quantity: {
             type: Number,
             required: true
-        }
+        },
+        _id: false
     }],
 });
 
 cartModel.methods.toJSON = function() {
     const { _id, ...cart } = this.toObject();
     cart.id = _id;
-    return cart;
-}
 
-cartModel.pre('findOne', function(){
+    if (cart.products && Array.isArray(cart.products)) {
+        cart.products = cart.products.map(product => {
+            const { _id, ...rest } = product;
+            return rest;
+        });
+    }
+
+    return cart;
+};
+
+cartModel.pre('findOne', function() {
     this.populate('user');
-    this.populate('products.product._id');
-})
+    this.populate('products.product');
+});
 
 const CartModel = model('Cart', cartModel);
 

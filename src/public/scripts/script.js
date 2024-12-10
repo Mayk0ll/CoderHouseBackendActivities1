@@ -39,6 +39,11 @@ const goToHome = () => {
   window.location.href = "/views/home";
 };
 
+const goToCart = () => {
+  const uid = getInfoUser().id
+  window.location.href = "/views/cart/" + uid;
+}
+
 const getInfoUser = () => {
   return JSON.parse(localStorage.getItem("data"));
 }

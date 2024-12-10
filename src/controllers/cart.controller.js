@@ -23,9 +23,7 @@ const addProductToCart = async (req, res) => {
     try {
         const { uid, pid } = req.params;
         let cart = await getCartByUserIdQuery(uid);
-        console.log(cart);
         if(!cart) cart = await createCartQuery(uid);
-        console.log(cart);
         await addProductToCartQuery(cart, pid);
         res.json({ data: 'entre' });
     } catch (error) {
