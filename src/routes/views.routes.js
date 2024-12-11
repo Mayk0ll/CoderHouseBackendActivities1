@@ -10,8 +10,20 @@ const props = {
 }
 
 router.get('/home', async (req, res) => {
-    const products = await getAllProductsQuery();
-    res.render('home', { ...props, products });
+    const page = req.query.page || 1;
+    const resp = await getAllProductsQuery(page);
+    res.render('home', { 
+        ...props, 
+        products: resp.docs,
+        total: resp.totalDocs,
+        limit: resp.limit,
+        page: resp.page,
+        pages: resp.totalPages,
+        hasPrevPage: resp.hasPrevPage,
+        hasNextPage: resp.hasNextPage,
+        prevPage: resp.prevPage,
+        nextPage: resp.nextPage,
+    });
 });
 
 router.get('/realtimeproducts', async (req, res) => {

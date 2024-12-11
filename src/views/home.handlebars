@@ -1,19 +1,23 @@
 <div>
     <h1>Productos</h1>
     <div class="row">
-        <div class="col-12 d-flex flex-wrap" id="product-list">
+        <div class="col-12 d-flex flex-wrap justify-content-center" id="product-list">
             {{#each products}}
-                <div class="cartProduct m-2">
-                    <h2>{{this.name}}</h2>
+                <div class="cartProduct m-2 p-3 border rounded shadow-sm" style="max-width: 300px; width: 100%;">
+                    <h2 class="h4">{{this.name}}</h2>
                     <p>{{this.description}}</p>
-                    <p>Código: {{this.code}}</p>
-                    <p>Precio: {{this.price}}</p>
-                    <p>Disponible: {{this.stock}}</p>
-                    <p></p>
-                    <p>Categoría: {{this.category}}</p>
-                    <button type="button" class="btn btn-primary mt-2" onclick="addCart('{{this._id}}')">Agregar carrito</button>
+                    <p><strong>Código:</strong> {{this.code}}</p>
+                    <p><strong>Precio:</strong> ${{this.price}}</p>
+                    <p><strong>Disponible:</strong> {{this.stock}}</p>
+                    <p><strong>Categoría:</strong> {{this.category}}</p>
+                    <button type="button" class="btn btn-primary mt-2" onclick="addCart('{{this._id}}')">Agregar al carrito</button>
                 </div>
             {{/each}}
+        </div>
+        <div class="col-12 d-flex flex-wrap justify-content-center gap-3 mt-3 mb-5">
+            <button class="btn btn-primary" onclick="changePage('{{prevPage}}')" {{#unless hasPrevPage}}disabled{{/unless}}>Anterior</button>
+            <h3>Pagina {{page}} de {{pages}}</h3>
+            <button class="btn btn-primary" onclick="changePage('{{nextPage}}')" {{#unless hasNextPage}}disabled{{/unless}}>Siguiente</button>
         </div>
     </div>
 </div>

@@ -60,11 +60,6 @@ productModel.methods.toJSON = function() {
     return product;
 }
 
-productModel.pre('find', function() {
-    // this.populate('category');
-    
-})
-
 const ProductModel = model('Products', productModel);
 
 export default ProductModel;

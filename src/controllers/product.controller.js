@@ -2,7 +2,9 @@ import { createProductQuery, deleteProductQuery, getAllProductsQuery, getProduct
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await getAllProductsQuery();
+        const {page} = req.query;
+        const products = await getAllProductsQuery(page);
+        console.log(products);
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ error });

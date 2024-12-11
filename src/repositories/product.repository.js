@@ -1,7 +1,7 @@
 import ProductModel from "../models/product.model.js";
 
-const getAllProductsQuery = async () => {
-    return await ProductModel.find({status: true}).lean();
+const getAllProductsQuery = async (page = 1) => {
+    return await ProductModel.paginate({status: true}, { page, limit: 8, lean: true });
 }
 
 const getProductByIdQuery = async (id) => {

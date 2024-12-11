@@ -48,6 +48,10 @@ const getInfoUser = () => {
   return JSON.parse(localStorage.getItem("data"));
 }
 
+const changePage = (page) => {
+  window.location.href = `/views/home?page=${page}`;
+}
+
 const login = (e) => {
   e.preventDefault();
   const email = document.getElementById("email")?.value;
